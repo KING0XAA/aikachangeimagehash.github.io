@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>愛花的改圖hash工具</title>
+    <!-- <script src="index.js"></script> -->
+    <script>function onInputImgSubmit(){let e=document.getElementById("input-imgfile");if((e.files?.length??0)>0){let t=e.files[0];console.log(t);let n=t.type;t.name,t.arrayBuffer().then(e=>{createModBytesDownload(e,n)})}}function stringToBytes(e){return new TextEncoder("utf-8").encode(e)}function bytesToString(e){return new TextDecoder("utf-8").decode(e)}function getLast17Bytes(e){return e.subarray(e.length-17,e.length)}function getNewAikaHashBytes(){return stringToBytes("aika"+new Date().getTime())}document.addEventListener("paste",function(e){var t=(e.clipboardData||e.originalEvent.clipboardData).items;for(var n in t){var a=t[n];let r=a.type;if(console.log(a),r&&r.startsWith("image/")&&"file"===a.kind){var i=a.getAsFile(),o=new FileReader;o.onloadend=function(e){createModBytesDownload(o.result,r)},o.readAsArrayBuffer(i)}}});const aikaHashRegexp=RegExp("aika\\d{13}");function checkAndReplaceHashBytes(e,t){let n=getLast17Bytes(e),a=bytesToString(n);if(aikaHashRegexp.test(a)){let r=new Uint8Array(e.length);return r.set(e,0),r.set(t,e.length-17),r}{let i=new Uint8Array(e.length+t.length);return i.set(e,0),i.set(t,e.length),i}}function byteArrayToDataURL(e,t){var n=new Blob([e],{type:t});return URL.createObjectURL(n)}function createModBytesDownload(e,t){let n=new Uint8Array(e),a="aika"+new Date().getTime(),r=stringToBytes(a),i=checkAndReplaceHashBytes(n,r),o=t.replace(/^image\//,"");var s=`${a}.${o}`;let l=byteArrayToDataURL(i,t);createDownload(s,l)}function createDownload(e,t){var n=document.createElement("a");n.href=t,n.download=e,document.body.appendChild(n),n.click(),document.body.removeChild(n),URL.revokeObjectURL(t)}const testbytes=getNewAikaHashBytes(),reStr=bytesToString(testbytes);</script>
+</head>
+<body>
+    <h3>愛花的改圖hash工具</h3>
+    <p>主要是給手機用的，PC的話抓這工具吧(需要.NET 8，沒安裝的話直接開程序在依照提示裝吧)</p>
+    <p>把輸入在圖片byte[]最後增加或替換 aika+timestamp 來達到變換 hash 效果</p>
+    <p>記得QQ發圖的時候要勾原圖</p>
+    <p>有鍵盤的話可以Ctrl+V貼上圖片，並自動產生下載</p>
+    <div class="row">
+        <input type="file" accept="image/*" id="input-imgfile">
+        <button type="button" id="button-submit1" onclick="onInputImgSubmit()">下載修改結果圖片</button>
+    </div>
+</body>
+</html>
