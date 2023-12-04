@@ -6,12 +6,7 @@ document.addEventListener('paste', function (event) {
         console.log(item);
         if (mimeType && mimeType.startsWith('image/') && item.kind === 'file') {
             var file = item.getAsFile();
-            var reader = new FileReader();
-            reader.onloadend = function (e) {
-                // createModBytesDownload(reader.result, mimeType);
-                createModImageDownload(e.target.result, file);
-            };
-            reader.readAsDataURL(file);
+            readFile(file);
         }
     }
 });
@@ -23,14 +18,19 @@ function onInputImgSubmit() {
         // console.log(file);
         // const mimeType = file.type;
         // const fileName = file.name;
-        file.readAsDataURL()
-            .then((dataUrl) => {
-                createModImageDownload(dataUrl, file);
-            });
+        readFile(file);
         // .then((arrayBuffer) => {
         //     createModBytesDownload(arrayBuffer, mimeType);
         // });
     }
+}
+function readFile(file){
+    var reader = new FileReader();
+    reader.onloadend = function (e) {
+        // createModBytesDownload(reader.result, mimeType);
+        createModImageDownload(e.target.result, file);
+    };
+    reader.readAsDataURL(file);
 }
 // function stringToBytes(str) {
 //     var encoder = new TextEncoder('utf-8');
