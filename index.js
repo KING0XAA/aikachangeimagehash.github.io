@@ -14,17 +14,20 @@ function onInputImgSubmit() {
     /** @type {HTMLInputElement} */
     const inputEl = document.getElementById('input-imgfile');
     if ((inputEl.files?.length ?? 0) > 0) {
-        const file = inputEl.files[0];
+        for (const file of inputEl.files) {
+            // const file = inputEl.files[0];
+            readFile(file);
+        }
         // console.log(file);
         // const mimeType = file.type;
         // const fileName = file.name;
-        readFile(file);
         // .then((arrayBuffer) => {
         //     createModBytesDownload(arrayBuffer, mimeType);
         // });
     }
 }
 function readFile(file){
+    // console.log(file);
     var reader = new FileReader();
     reader.onloadend = function (e) {
         // createModBytesDownload(reader.result, mimeType);

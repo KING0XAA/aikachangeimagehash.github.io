@@ -5,15 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>愛花的改圖1像素工具</title>
     <!-- <script src="index.js"></script> -->
-    <script>function onInputImgSubmit(){let e=document.getElementById("input-imgfile");if((e.files?.length??0)>0){let t=e.files[0];readFile(t)}}function readFile(e){var t=new FileReader;t.onloadend=function(t){createModImageDownload(t.target.result,e)},t.readAsDataURL(e)}function createModImageDownload(e,t){var a=new Image;a.onload=()=>{let e=document.createElement("canvas"),o=e.getContext("2d");e.width=a.width,e.height=a.height,o.drawImage(a,0,0),changeBottomRightPixelColor(o,a.width,a.height);var n=e.toDataURL(t.type);let i="aika"+new Date().getTime(),r=t.type.replace(/^image\//,"");createDownload(`${i}.${r}`,n)},a.src=e}function changeBottomRightPixelColor(e,t,a){for(var o=e.getImageData(t-1,a-1,1,1),n=o.data,i=[255*Math.random(),255*Math.random(),255*Math.random(),255],r=0;r<4;r++)n[r]=i[r];e.putImageData(o,t-1,a-1)}function createDownload(e,t){var a=document.createElement("a");a.href=t,a.download=e,document.body.appendChild(a),a.click(),document.body.removeChild(a),URL.revokeObjectURL(t)}document.addEventListener("paste",function(e){var t=(e.clipboardData||e.originalEvent.clipboardData).items;for(var a in t){var o=t[a];let n=o.type;console.log(o),n&&n.startsWith("image/")&&"file"===o.kind&&readFile(o.getAsFile())}});</script>
+    <script>function onInputImgSubmit(){let e=document.getElementById("input-imgfile");if((e.files?.length??0)>0)for(let t of e.files)readFile(t)}function readFile(e){var t=new FileReader;t.onloadend=function(t){createModImageDownload(t.target.result,e)},t.readAsDataURL(e)}function createModImageDownload(e,t){var a=new Image;a.onload=()=>{let e=document.createElement("canvas"),o=e.getContext("2d");e.width=a.width,e.height=a.height,o.drawImage(a,0,0),changeBottomRightPixelColor(o,a.width,a.height);var n=e.toDataURL(t.type);let i="aika"+new Date().getTime(),r=t.type.replace(/^image\//,"");createDownload(`${i}.${r}`,n)},a.src=e}function changeBottomRightPixelColor(e,t,a){for(var o=e.getImageData(t-1,a-1,1,1),n=o.data,i=[255*Math.random(),255*Math.random(),255*Math.random(),255],r=0;r<4;r++)n[r]=i[r];e.putImageData(o,t-1,a-1)}function createDownload(e,t){var a=document.createElement("a");a.href=t,a.download=e,document.body.appendChild(a),a.click(),document.body.removeChild(a),URL.revokeObjectURL(t)}document.addEventListener("paste",function(e){var t=(e.clipboardData||e.originalEvent.clipboardData).items;for(var a in t){var o=t[a];let n=o.type;console.log(o),n&&n.startsWith("image/")&&"file"===o.kind&&readFile(o.getAsFile())}});</script>
 </head>
 <body>
-    <h3>愛花的改圖1像素工具_2312041724fix</h3>
+    <h3>愛花的改圖1像素工具_2312041751</h3>
     <p>原理:改圖右下角1像素顏色來達到變換圖片hash效果</p>
     <p>主要是給手機用的，windows的話用這個吧 <a href="AikaImageChangeHash2.zip">AikaImageChangeHash2</a> ，可以偵測剪貼簿直接替換</p>
     <p>有鍵盤的話可以Ctrl+V貼上圖片，並自動產生下載</p>
     <div class="row">
-        <input type="file" accept="image/*" id="input-imgfile">
+        <input type="file" accept="image/*" id="input-imgfile" multiple>
         <button type="button" id="button-submit1" onclick="onInputImgSubmit()">下載修改結果圖片</button>
     </div>
 </body>
