@@ -3,15 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>愛花的改圖hash工具</title>
+    <title>愛花的改圖1像素工具</title>
     <!-- <script src="index.js"></script> -->
-    <script>function onInputImgSubmit(){let e=document.getElementById("input-imgfile");if((e.files?.length??0)>0){let t=e.files[0];console.log(t);let n=t.type;t.name,t.arrayBuffer().then(e=>{createModBytesDownload(e,n)})}}function stringToBytes(e){return new TextEncoder("utf-8").encode(e)}function bytesToString(e){return new TextDecoder("utf-8").decode(e)}function getLast17Bytes(e){return e.subarray(e.length-17,e.length)}function getNewAikaHashBytes(){return stringToBytes("aika"+new Date().getTime())}document.addEventListener("paste",function(e){var t=(e.clipboardData||e.originalEvent.clipboardData).items;for(var n in t){var a=t[n];let r=a.type;if(console.log(a),r&&r.startsWith("image/")&&"file"===a.kind){var i=a.getAsFile(),o=new FileReader;o.onloadend=function(e){createModBytesDownload(o.result,r)},o.readAsArrayBuffer(i)}}});const aikaHashRegexp=RegExp("aika\\d{13}");function checkAndReplaceHashBytes(e,t){let n=getLast17Bytes(e),a=bytesToString(n);if(aikaHashRegexp.test(a)){let r=new Uint8Array(e.length);return r.set(e,0),r.set(t,e.length-17),r}{let i=new Uint8Array(e.length+t.length);return i.set(e,0),i.set(t,e.length),i}}function byteArrayToDataURL(e,t){var n=new Blob([e],{type:t});return URL.createObjectURL(n)}function createModBytesDownload(e,t){let n=new Uint8Array(e),a="aika"+new Date().getTime(),r=stringToBytes(a),i=checkAndReplaceHashBytes(n,r),o=t.replace(/^image\//,"");var s=`${a}.${o}`;let l=byteArrayToDataURL(i,t);createDownload(s,l)}function createDownload(e,t){var n=document.createElement("a");n.href=t,n.download=e,document.body.appendChild(n),n.click(),document.body.removeChild(n),URL.revokeObjectURL(t)}const testbytes=getNewAikaHashBytes(),reStr=bytesToString(testbytes);</script>
+    <script>function onInputImgSubmit(){let e=document.getElementById("input-imgfile");if((e.files?.length??0)>0){let t=e.files[0];t.readAsDataURL().then(e=>{createModImageDownload(e,t)})}}function createModImageDownload(e,t){var a=new Image;a.onload=()=>{let e=document.createElement("canvas"),o=e.getContext("2d");e.width=a.width,e.height=a.height,o.drawImage(a,0,0),changeBottomRightPixelColor(o,a.width,a.height);var n=e.toDataURL(t.type);let i="aika"+new Date().getTime(),r=t.type.replace(/^image\//,"");createDownload(`${i}.${r}`,n)},a.src=e}function changeBottomRightPixelColor(e,t,a){for(var o=e.getImageData(t-1,a-1,1,1),n=o.data,i=[255*Math.random(),255*Math.random(),255*Math.random(),255],r=0;r<4;r++)n[r]=i[r];e.putImageData(o,t-1,a-1)}function createDownload(e,t){var a=document.createElement("a");a.href=t,a.download=e,document.body.appendChild(a),a.click(),document.body.removeChild(a),URL.revokeObjectURL(t)}document.addEventListener("paste",function(e){var t=(e.clipboardData||e.originalEvent.clipboardData).items;for(var a in t){var o=t[a];let n=o.type;if(console.log(o),n&&n.startsWith("image/")&&"file"===o.kind){var i=o.getAsFile(),r=new FileReader;r.onloadend=function(e){createModImageDownload(e.target.result,i)},r.readAsDataURL(i)}}});</script>
 </head>
 <body>
-    <h3>愛花的改圖hash工具</h3>
-    <p>主要是給手機用的，PC的話抓這 <a href="aikaImageHashChanger.zip">工具</a> 吧(需要.NET 8，沒安裝的話直接開程序在依照提示裝吧)</p>
-    <p>把輸入在圖片byte[]最後增加或替換 aika+timestamp 來達到變換 hash 效果</p>
-    <p>記得QQ發圖的時候要勾原圖</p>
+    <h3>愛花的改圖1像素工具</h3>
+    <p>原理:改圖右下角1像素顏色來達到變換圖片hash效果</p>
+    <p>主要是給手機用的，windows的話用這個吧 <a href="AikaImageChangeHash2.zip">AikaImageChangeHash2</a> ，可以偵測剪貼簿直接替換</p>
     <p>有鍵盤的話可以Ctrl+V貼上圖片，並自動產生下載</p>
     <div class="row">
         <input type="file" accept="image/*" id="input-imgfile">
