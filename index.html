@@ -1,19 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>愛花的改圖1像素工具</title>
-    <script src="index.js"></script>
 </head>
+
 <body>
-    <h3>愛花的改圖1像素工具_2312041831</h3>
+    <h3>愛花的改圖1像素工具_231208.1100</h3>
     <p>原理:改圖右下角1像素顏色來達到變換圖片hash效果</p>
     <p>主要是給手機用的，windows的話用這個吧 <a href="AikaImageChangeHash2.zip">AikaImageChangeHash2</a> ，可以偵測剪貼簿直接替換</p>
     <p>有鍵盤的話可以Ctrl+V貼上圖片，並自動產生下載</p>
-    <div class="row">
+    <p>
+        <label>
+            <input type="checkbox" id="pxlimit" onchange="saveInputStatus()">
+            <span>圖片超過像素自動縮小</span>
+        </label>
+        <input type="number" id="pxmax" value="3000" style="width: 50px;" onchange="saveInputStatus()">
+    </p>
+    <p>
+        <span>儲存格式</span>
+        <label>
+            <input type="radio" name="saveformat" onchange="saveInputStatus()" value="original">原始格式
+        </label>
+        <label>
+            <input type="radio" name="saveformat" onchange="saveInputStatus()" value="png">png
+        </label>
+        <label>
+            <input type="radio" name="saveformat" onchange="saveInputStatus()" value="jpeg" checked>jpeg
+        </label>
+    </p>
+    <p>
         <input type="file" accept="image/*" id="input-imgfile" multiple>
         <button type="button" id="button-submit1" onclick="onInputImgSubmit()">下載修改結果圖片</button>
-    </div>
+    </p>
+    <script src="index.js"></script>
 </body>
+
 </html>

@@ -1,3 +1,29 @@
+const pxLimitInput = document.getElementById('pxlimit');
+const pxMaxInput = document.getElementById('pxmax');
+const saveformatInputs = {}
+document.querySelectorAll('input[name=saveformat]').forEach(e => {
+    saveformatInputs[e.value] = e;
+});
+function getSaveFormat() {
+    const keys = Object.keys(saveformatInputs);
+    for (const formatName of keys) {
+        if (saveformatInputs[formatName].checked) {
+            return saveformatInputs[formatName].value;
+        }
+    }
+}
+function saveInputStatus() {
+    localStorage.setItem('pxlimit', pxLimitInput.checked);
+    localStorage.setItem('pxmax', pxMaxInput.value);
+    localStorage.setItem('saveformat', getSaveFormat());
+}
+function loadInputStatus() {
+    pxLimitInput.checked = localStorage.getItem('pxlimit') == 'true';
+    pxMaxInput.value = Number(localStorage.getItem('pxmax') ?? 3000);
+    saveformatInputs[(localStorage.getItem('saveformat') ?? 'jpeg')].checked = true;
+}
+loadInputStatus();
+
 document.addEventListener('paste', function (event) {
     var items = (event.clipboardData || event.originalEvent.clipboardData).items;
     const files = [];
@@ -43,11 +69,20 @@ function createModImageDownload(dataUrl, file) {
             const context = canvas.getContext('2d');
             canvas.width = img.width;
             canvas.height = img.height;
+            context.imageSmoothingQuality = 'high';
             context.drawImage(img, 0, 0);
             changeBottomRightPixelColor(context, img.width, img.height);
-            var modifiedImageDataUrl = canvas.toDataURL(file.type);
+            if (pxLimitInput.checked) {
+                resizeImage(img, canvas, Number(pxMaxInput.value));
+            }
+            let saveformat = getSaveFormat();
+            let fileType = file.type;
+            if (saveformat != 'original') {
+                fileType = 'image/' + saveformat;
+            }
+            var modifiedImageDataUrl = canvas.toDataURL(fileType, 1);
             const hashName = 'aika' + new Date().getTime();
-            const type = file.type.replace(/^image\//, '');
+            const type = fileType.replace(/^image\//, '');
             var fileName = `${hashName}.${type}`;
             createDownload(fileName, modifiedImageDataUrl);
             resolve();
@@ -63,6 +98,25 @@ function changeBottomRightPixelColor(context, width, height) {
         pixel[i] = randomColor[i];
     }
     context.putImageData(imageData, width - 1, height - 1);
+}
+function resizeImage(img, canvas, maxSize) {
+    if (img.width <= maxSize && img.height <= maxSize) {
+        return;
+    }
+    var newWidth, newHeight;
+
+    if (img.width > img.height) {
+        newWidth = maxSize;
+        newHeight = Math.floor((img.height / img.width) * maxSize);
+    } else {
+        newWidth = Math.floor((img.width / img.height) * maxSize);
+        newHeight = maxSize;
+    }
+
+    canvas.width = newWidth;
+    canvas.height = newHeight;
+    var context = canvas.getContext('2d');
+    context.drawImage(img, 0, 0, newWidth, newHeight);
 }
 function createDownload(fileName, dataUrl) {
     var downloadLink = document.createElement("a");
