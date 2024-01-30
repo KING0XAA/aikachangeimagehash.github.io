@@ -24,6 +24,8 @@ function loadInputStatus() {
 }
 loadInputStatus();
 
+let modImageDowdloadUrls = [];
+
 document.addEventListener('paste', function (event) {
     var items = (event.clipboardData || event.originalEvent.clipboardData).items;
     const files = [];
@@ -81,9 +83,14 @@ function createModImageDownload(dataUrl, file) {
                 fileType = 'image/' + saveformat;
             }
             var modifiedImageDataUrl = canvas.toDataURL(fileType, 1);
+
             const hashName = 'aika' + new Date().getTime();
             const type = fileType.replace(/^image\//, '');
             var fileName = `${hashName}.${type}`;
+
+            modImageDowdloadUrls.push({ name: fileName, url: modifiedImageDataUrl });
+            updateDownloadUrls();
+
             createDownload(fileName, modifiedImageDataUrl);
             resolve();
         }
@@ -128,4 +135,23 @@ function createDownload(fileName, dataUrl) {
         document.body.removeChild(downloadLink);
         URL.revokeObjectURL(dataUrl);
     }, 1);
+}
+function clearDownloadUrls() {
+    modImageDowdloadUrls = [];
+    updateDownloadUrls();
+}
+function updateDownloadUrls() {
+    const listElement = document.getElementById('download-url-list');
+    for (const chEl of listElement.children) {
+        listElement.removeChild(chEl);
+    }
+
+    for (const data of modImageDowdloadUrls) {
+        const urlEl = document.createElement('a');
+        urlEl.href = data.url;
+        urlEl.download = data.name;
+        urlEl.textContent = data.name;
+        urlEl.target = '_blank';
+        listElement.appendChild(urlEl);
+    }
 }

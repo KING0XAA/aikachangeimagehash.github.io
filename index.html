@@ -8,7 +8,7 @@
 </head>
 
 <body>
-    <h3>愛花的改圖1像素工具_231208.1100</h3>
+    <h3>愛花的改圖1像素工具_240130.1623</h3>
     <p>原理:改圖右下角1像素顏色來達到變換圖片hash效果</p>
     <p>主要是給手機用的，windows的話用這個吧 <a href="AikaImageChangeHash2.zip">AikaImageChangeHash2</a> ，可以偵測剪貼簿直接替換</p>
     <p>有鍵盤的話可以Ctrl+V貼上圖片，並自動產生下載</p>
@@ -34,6 +34,11 @@
     <p>
         <input type="file" accept="image/*" id="input-imgfile" multiple>
         <button type="button" id="button-submit1" onclick="onInputImgSubmit()">下載修改結果圖片</button>
+    </p>
+    <p>
+        <span>下載連結: (如果點上面的下載修改結果沒反應的話，點下面這些連結試試)</span>
+        <button onclick="clearDownloadUrls()">清除連結</button>
+        <div id="download-url-list"></div>
     </p>
     <script src="index.js"></script>
 </body>
